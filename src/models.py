@@ -16,7 +16,7 @@ class Usuario(Base):
     id = mapped_column(Integer, primary_key=True)
     nombre = mapped_column(String(50), nullable=False)
     # variable que tiene la lista de ,is favoritos 
-    favoritos = relationship(back_populates="user")
+    favoritos = relationship("Favoritos", back_populates="usuario")
    
 
 
@@ -26,18 +26,21 @@ class Personajes(Base):
     id = mapped_column(Integer, primary_key=True)
     nombre = mapped_column(String(50), nullable=False)
     tamaño = mapped_column(String(50))
+    favoritos = relationship("Favoritos", back_populates="personajes")
+    
 
    
 class Planetas(Base):
-    _tablename_ = "planetas"
+    __tablename__ = "planetas"
 
     id = mapped_column(Integer, primary_key=True)
     nombre = mapped_column(String(50), nullable=False)
+    favoritos = relationship("Favoritos", back_populates="planetas")
     
     
 
 class Favoritos(Base):
-    _tablename_ = "favoritos"
+    __tablename__ = "favoritos"
 
     id = mapped_column(Integer, primary_key=True)
     nombre = mapped_column(String(50), nullable=False) 
@@ -45,9 +48,9 @@ class Favoritos(Base):
     personajes_id = mapped_column(Integer, ForeignKey("personajes.id"), nullable=True)
     usuario_id = mapped_column(Integer, ForeignKey("usuario.id"))
     # variables vistuales 
-    personajes = relationship(backref="personajes")
-    planetas =  relationship(backref="planetas")
-    user = relationship(back_populates="favoritos")
+    personajes = relationship("Personajes", back_populates="favoritos")
+    planetas =  relationship("Planetas", back_populates="favoritos")
+    user = relationship("Usuario", back_populates="favoritos")
 
 
 # Relacion bidirecional una llama a la otra 
